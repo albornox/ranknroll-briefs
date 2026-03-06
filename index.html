@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brief — Amor al Taco × RankNRoll</title>
+<style>
+  :root {
+    --rojo: #c0392b;
+    --amarillo: #f39c12;
+    --verde: #27ae60;
+    --dark: #1a1a1a;
+    --mid: #444;
+    --light: #777;
+    --border: #e0e0e0;
+    --bg: #fafafa;
+    --white: #ffffff;
+    --section-bg: #fff8f0;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--dark); font-size: 15px; line-height: 1.7; }
+  .page { max-width: 860px; margin: 0 auto; padding: 40px 24px 80px; }
+  .header { background: var(--rojo); color: white; padding: 40px 48px; border-radius: 16px; margin-bottom: 36px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+  .header-text h1 { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+  .header-text p { font-size: 15px; opacity: 0.85; max-width: 480px; }
+  .header-badge { background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.4); border-radius: 12px; padding: 14px 22px; text-align: center; white-space: nowrap; }
+  .header-badge .ag { font-size: 11px; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px; }
+  .header-badge .nombre { font-size: 18px; font-weight: 800; }
+  .intro { background: #fffbf5; border: 2px solid #fde8c8; border-radius: 12px; padding: 24px 28px; margin-bottom: 32px; font-size: 15px; color: var(--mid); line-height: 1.8; }
+  .intro strong { color: var(--dark); }
+  .seccion { background: var(--white); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 28px; overflow: hidden; }
+  .seccion-titulo { background: var(--section-bg); border-bottom: 1px solid var(--border); padding: 16px 28px; display: flex; align-items: center; gap: 12px; }
+  .seccion-titulo .num { width: 32px; height: 32px; border-radius: 50%; background: var(--rojo); color: white; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .seccion-titulo h2 { font-size: 16px; font-weight: 700; color: var(--dark); }
+  .seccion-titulo p { font-size: 13px; color: var(--light); margin-top: 1px; }
+  .seccion-cuerpo { padding: 24px 28px; }
+  .pregunta { margin-bottom: 22px; }
+  .pregunta:last-child { margin-bottom: 0; }
+  .pregunta > label { display: block; font-weight: 600; font-size: 14px; color: var(--dark); margin-bottom: 6px; }
+  .ayuda { font-size: 13px; color: var(--light); font-weight: 400; margin-bottom: 8px; line-height: 1.5; }
+  input[type="text"], input[type="tel"], input[type="email"], input[type="url"], input[type="number"], input[type="time"], select, textarea { width: 100%; border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; font-size: 14px; font-family: inherit; color: var(--dark); background: white; transition: border-color 0.2s; outline: none; }
+  input:focus, select:focus, textarea:focus { border-color: var(--rojo); }
+  textarea { resize: vertical; min-height: 80px; }
+  .dos-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 580px) { .dos-col { grid-template-columns: 1fr; } .header { padding: 28px 24px; } .seccion-cuerpo { padding: 18px 18px; } }
+  .opciones { display: flex; flex-wrap: wrap; gap: 10px; }
+  .opcion { display: flex; align-items: center; gap: 8px; background: #f5f5f5; border: 1.5px solid var(--border); border-radius: 8px; padding: 8px 14px; cursor: pointer; font-size: 13px; transition: all 0.2s; }
+  .opcion:hover { border-color: var(--rojo); background: #fff0ed; }
+  .opcion input[type="radio"], .opcion input[type="checkbox"] { width: auto; margin: 0; accent-color: var(--rojo); }
+  .horario-grid { display: grid; grid-template-columns: 110px 1fr 1fr auto; gap: 8px; align-items: center; margin-bottom: 6px; }
+  .dia-label { font-size: 13px; font-weight: 600; }
+  .cerrado-label { font-size: 12px; color: var(--light); display: flex; align-items: center; gap: 4px; cursor: pointer; }
+  .cerrado-label input { width: auto; }
+  .escala-group { display: flex; gap: 8px; }
+  .escala-group input[type="radio"] { display: none; }
+  .escala-group label { width: 44px; height: 44px; border: 1.5px solid var(--border); border-radius: 8px; background: white; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; color: var(--mid); }
+  .escala-group input[type="radio"]:checked + label { background: var(--rojo); color: white; border-color: var(--rojo); }
+  .escala-group label:hover { border-color: var(--rojo); background: #fff0ed; color: var(--rojo); }
+  .nota { background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: #166534; margin-top: 14px; }
+  .nota strong { display: block; margin-bottom: 3px; }
+  .nota-naranja { background: #fff7ed; border: 1.5px solid #fed7aa; border-radius: 10px; padding: 14px 18px; font-size: 13px; color: #9a3412; margin-top: 14px; }
+  .firma-section { background: var(--dark); color: white; border-radius: 14px; padding: 32px 36px; margin-top: 32px; }
+  .firma-section h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; }
+  .firma-section > p { font-size: 13px; opacity: 0.75; margin-bottom: 24px; }
+  .firma-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 580px) { .firma-grid { grid-template-columns: 1fr; } }
+  .firma-grid label { color: rgba(255,255,255,0.8); font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; }
+  .firma-grid input { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: white; }
+  .firma-grid input::placeholder { color: rgba(255,255,255,0.35); }
+  .firma-grid input:focus { border-color: var(--amarillo); }
+  .btn-enviar { margin-top: 24px; width: 100%; background: var(--rojo); color: white; border: none; border-radius: 10px; padding: 18px; font-size: 17px; font-weight: 700; cursor: pointer; transition: background 0.2s; letter-spacing: 0.3px; }
+  .btn-enviar:hover { background: #a93226; }
+  .btn-enviar:active { background: #922b21; }
+  .footer { text-align: center; font-size: 12px; color: var(--light); margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-text">
+      <h1>Cuestionario de arranque</h1>
+      <p>Para poder hacer un buen trabajo para tu restaurante, necesitamos conocerlo bien. Esto no tiene preguntas difíciles — solo cuéntanos cómo es tu negocio con tus propias palabras.</p>
+    </div>
+    <div class="header-badge">
+      <div class="ag">Agencia</div>
+      <div class="nombre">RankNRoll</div>
+    </div>
+  </div>
+
+  <div class="intro">
+    <strong>Hola Cristian,</strong> este cuestionario lo preparamos para entender tu negocio antes de empezar a trabajar juntos. No hay respuestas correctas ni incorrectas — entre más detallado seas, mejores resultados vamos a lograr. Puedes llenarlo tranquilamente, no hay afán. Si en algún momento tienes una duda, escríbenos.
+    <br><br>
+    Tiempo estimado: <strong>20 a 30 minutos.</strong>
+  </div>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!-- FORMULARIO — action se actualiza con el   -->
+  <!-- ID de Formspree una vez creada la cuenta  -->
+  <!-- ══════════════════════════════════════════ -->
+  <form action="https://formspree.io/f/xgonelnp" method="POST">
+
+    <!-- Campos ocultos de control -->
+    <input type="hidden" name="_subject" value="Brief nuevo — Amor al Taco">
+    <input type="hidden" name="_next" value="https://TU-USUARIO.github.io/ranknroll-briefs/gracias.html">
+    <input type="hidden" name="_language" value="es">
+
+    <!-- ── SECCIÓN 1: EL NEGOCIO ── -->
+    <div class="seccion">
+      <div class="seccion-titulo">
+        <div class="num">1</div>
+        <div>
+          <h2>Tu restaurante</h2>
+          <p>La información básica que necesitamos para todo lo que vamos a hacer</p>
+        </div>
+      </div>
+      <div class="seccion-cuerpo">
+
+        <div class="pregunta">
+          <label>¿Cuál es el nombre oficial del restaurante?</label>
+          <div class="ayuda">El nombre tal como quieres que aparezca en Google y en tu página web.</div>
+          <input type="text" name="nombre_restaurante" placeholder="Ej: Amor al Taco" required>
+        </div>
+
+        <div class="dos-col">
+          <div class="pregunta">
+            <label>¿En qué barrio está ubicado?</label>
+            <input type="text" name="barrio" placeholder="Ej: Chapinero, Bogotá">
+          </div>
+          <div class="pregunta">
+            <label>¿Cuál es la dirección exacta?</label>
+            <input type="text" name="direccion" placeholder="Ej: Calle 53 # 13-45">
+          </div>
+        </div>
+
+        <div class="dos-col">
+          <div class="pregunta">
+            <label>Teléfono de contacto</label>
+            <div class="ayuda">El número al que los clientes pueden llamar o escribir por WhatsApp.</div>
+            <input type="tel" name="telefono" placeholder="Ej: 314 555 1234">
+          </div>
+          <div class="pregunta">
+            <label>Correo electrónico del restaurante</label>
+            <input type="email" name="correo" placeholder="Ej: amoraltaco@gmail.com">
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Hace cuánto tiempo está abierto el restaurante?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="antiguedad" value="Menos de 1 año"> Menos de 1 año</label>
+            <label class="opcion"><input type="radio" name="antiguedad" value="1 a 3 años"> 1 a 3 años</label>
+            <label class="opcion"><input type="radio" name="antiguedad" value="3 a 5 años"> 3 a 5 años</label>
+            <label class="opcion"><input type="radio" name="antiguedad" value="Más de 5 años"> Más de 5 años</label>
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Cuántas personas caben sentadas en el restaurante?</label>
+          <div class="ayuda">Número aproximado de sillas o puestos disponibles.</div>
+          <input type="number" name="capacidad" placeholder="Ej: 30" style="max-width:160px">
+        </div>
+
+        <div class="pregunta">
+          <label>¿Tienen servicio de domicilios?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="domicilios" value="Sí, propios"> Sí, propios (tenemos mensajero)</label>
+            <label class="opcion"><input type="radio" name="domicilios" value="Sí, por apps"> Sí, por Rappi / iFood / Domicilios.com</label>
+            <label class="opcion"><input type="radio" name="domicilios" value="Ambos"> Ambos</label>
+            <label class="opcion"><input type="radio" name="domicilios" value="No"> No, solo para comer aquí</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 2: HORARIOS ── -->
+    <div class="seccion">
+      <div class="seccion-titulo">
+        <div class="num">2</div>
+        <div>
+          <h2>Horarios de atención</h2>
+          <p>Google muestra tus horarios — si están mal, la gente llega cuando estás cerrado</p>
+        </div>
+      </div>
+      <div class="seccion-cuerpo">
+        <div class="ayuda" style="margin-bottom:16px">Escribe la hora de apertura y cierre de cada día. Si ese día no abren, marca "Cerrado".</div>
+        <div style="display:grid; gap:8px;">
+          <div class="horario-grid">
+            <span class="dia-label">Lunes</span>
+            <input type="time" name="lunes_apertura"> <input type="time" name="lunes_cierre">
+            <label class="cerrado-label"><input type="checkbox" name="lunes_cerrado" value="Cerrado"> Cerrado</label>
+          </div>
+          <div class="horario-grid">
+            <span class="dia-label">Martes</span>
+            <input type="time" name="martes_apertura"> <input type="time" name="martes_cierre">
+            <label class="cerrado-label"><input type="checkbox" name="martes_cerrado" value="Cerrado"> Cerrado</label>
+          </div>
+          <div class="horario-grid">
+            <span class="dia-label">Miércoles</span>
+            <input type="time" name="miercoles_apertura"> <input type="time" name="miercoles_cierre">
+            <label class="cerrado-label"><input type="checkbox" name="miercoles_cerrado" value="Cerrado"> Cerrado</label>
+          </div>
+          <div class="horario-grid">
+            <span class="dia-label">Jueves</span>
+            <input type="time" name="jueves_apertura"> <input type="time" name="jueves_cierre">
+            <label class="cerrado-label"><input type="checkbox" name="jueves_cerrado" value="Cerrado"> Cerrado</label>
+          </div>
+          <div class="horario-grid">
+            <span class="dia-label">Viernes</span>
+            <input type="time" name="viernes_apertura"> <input type="time" name="viernes_cierre">
+            <label class="cerrado-label"><input type="checkbox" name="viernes_cerrado" value="Cerrado"> Cerrado</label>
+          </div>
+          <div class="horario-grid">
+            <span class="dia-label">Sábado</span>
+            <input type="time" name="sabado_apertura"> <input type="time" name="sabado_cierre">
+            <label class="cerrado-label"><input type="checkbox" name="sabado_cerrado" value="Cerrado"> Cerrado</label>
+          </div>
+          <div class="horario-grid">
+            <span class="dia-label">Domingo</span>
+            <input type="time" name="domingo_apertura"> <input type="time" name="domingo_cierre">
+            <label class="cerrado-label"><input type="checkbox" name="domingo_cerrado" value="Cerrado"> Cerrado</label>
+          </div>
+          <div class="horario-grid">
+            <span class="dia-label">Festivos</span>
+            <input type="time" name="festivos_apertura"> <input type="time" name="festivos_cierre">
+            <label class="cerrado-label"><input type="checkbox" name="festivos_cerrado" value="Cerrado"> Cerrado</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 3: EL MENÚ ── -->
+    <div class="seccion">
+      <div class="seccion-titulo">
+        <div class="num">3</div>
+        <div>
+          <h2>Tu menú y lo que te hace especial</h2>
+          <p>Lo que vendes y cómo lo describes es lo que vamos a mostrar en Google</p>
+        </div>
+      </div>
+      <div class="seccion-cuerpo">
+
+        <div class="pregunta">
+          <label>¿Cuáles son los 5 platos o productos que más vendes o que más te gustan?</label>
+          <div class="ayuda">Piensa en lo que la gente más pide o lo que más orgullo te da ofrecer.</div>
+          <textarea name="platos_estrella" placeholder="Ej: Tacos de cochinita, tacos de birria, quesadillas de flor de calabaza, agua de jamaica, churros con cajeta..."></textarea>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Cuál es el precio promedio de una comida completa para una persona?</label>
+          <div class="ayuda">Lo que gasta alguien que viene a comer solo (sin bebidas extra).</div>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="precio_promedio" value="Menos de $15.000"> Menos de $15.000</label>
+            <label class="opcion"><input type="radio" name="precio_promedio" value="$15.000 – $25.000"> $15.000 – $25.000</label>
+            <label class="opcion"><input type="radio" name="precio_promedio" value="$25.000 – $40.000"> $25.000 – $40.000</label>
+            <label class="opcion"><input type="radio" name="precio_promedio" value="$40.000 – $60.000"> $40.000 – $60.000</label>
+            <label class="opcion"><input type="radio" name="precio_promedio" value="Más de $60.000"> Más de $60.000</label>
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Tienen opciones para personas con restricciones alimenticias?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="checkbox" name="restricciones" value="Vegetariano"> Opciones vegetarianas</label>
+            <label class="opcion"><input type="checkbox" name="restricciones" value="Vegano"> Opciones veganas</label>
+            <label class="opcion"><input type="checkbox" name="restricciones" value="Sin gluten"> Sin gluten</label>
+            <label class="opcion"><input type="checkbox" name="restricciones" value="Sin picante"> Sin picante (versión suave)</label>
+            <label class="opcion"><input type="checkbox" name="restricciones" value="Ninguna"> No por ahora</label>
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Qué tiene Amor al Taco que no tienen otros restaurantes mexicanos en Bogotá?</label>
+          <div class="ayuda">¿Por qué alguien debería venir a tu restaurante y no a otro? Puede ser la receta, el ambiente, los ingredientes, el precio, la atención...</div>
+          <textarea name="diferenciador" placeholder="Ej: Usamos recetas de mi abuela de Oaxaca, los ingredientes los traemos de México, el ambiente es muy auténtico..."></textarea>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Cómo describirías el ambiente de tu restaurante?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="checkbox" name="ambiente" value="Familiar"> Familiar (van familias con niños)</label>
+            <label class="opcion"><input type="checkbox" name="ambiente" value="Pareja"> Para pareja / romántico</label>
+            <label class="opcion"><input type="checkbox" name="ambiente" value="Amigos"> Para amigos / grupos</label>
+            <label class="opcion"><input type="checkbox" name="ambiente" value="Ejecutivo"> Rápido / ejecutivo (almuerzo de trabajo)</label>
+            <label class="opcion"><input type="checkbox" name="ambiente" value="Moderno"> Moderno / instagrameable</label>
+            <label class="opcion"><input type="checkbox" name="ambiente" value="Tradicional"> Tradicional / callejero</label>
+            <label class="opcion"><input type="checkbox" name="ambiente" value="Bar"> Bar / con rumba</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 4: TUS CLIENTES ── -->
+    <div class="seccion">
+      <div class="seccion-titulo">
+        <div class="num">4</div>
+        <div>
+          <h2>¿A quién le vendes?</h2>
+          <p>Entre más sepamos de tu cliente ideal, mejor vamos a orientar los anuncios</p>
+        </div>
+      </div>
+      <div class="seccion-cuerpo">
+
+        <div class="pregunta">
+          <label>¿Quién es la persona que más visita tu restaurante hoy?</label>
+          <div class="ayuda">Descríbela como si nos la fueras a presentar: edad, si va solo o en grupo, si va entre semana o fin de semana, si vive cerca...</div>
+          <textarea name="cliente_actual" placeholder="Ej: Son adultos de 25 a 40 años que trabajan cerca, vienen en grupos al almuerzo entre semana. También vienen familias los fines de semana..."></textarea>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Quién sería tu cliente ideal, el que más quisiera atraer?</label>
+          <div class="ayuda">Si pudieras elegir, ¿a qué tipo de persona le gustaría venderle más?</div>
+          <textarea name="cliente_ideal" placeholder="Ej: Me gustaría atraer más ejecutivos para el almuerzo de lunes a viernes, y más grupos de amigos los fines de semana..."></textarea>
+        </div>
+
+        <div class="pregunta">
+          <label>¿En qué zonas o barrios de Bogotá viven o trabajan tus clientes?</label>
+          <div class="ayuda">Esto nos sirve para mostrar los anuncios solo a personas que pueden llegar hasta tu restaurante.</div>
+          <textarea name="zonas_clientes" placeholder="Ej: La mayoría vive o trabaja en Chapinero, Teusaquillo y el centro. Algunos vienen de Usaquén los fines de semana..."></textarea>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Cuánto dinero aproximado gasta un cliente en una sola visita?</label>
+          <input type="text" name="gasto_por_visita" placeholder="Ej: Entre $30.000 y $50.000 por persona">
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 5: LA COMPETENCIA ── -->
+    <div class="seccion">
+      <div class="seccion-titulo">
+        <div class="num">5</div>
+        <div>
+          <h2>Otros restaurantes similares</h2>
+          <p>Saber con quién compites nos ayuda a posicionarte mejor</p>
+        </div>
+      </div>
+      <div class="seccion-cuerpo">
+
+        <div class="pregunta">
+          <label>¿Cuáles son los restaurantes mexicanos en Bogotá que más admiras o que sientes que son tu mayor competencia?</label>
+          <textarea name="competencia" placeholder="Ej: El Charro Mexicano en Chapinero, Los Compadres en Zona Rosa, Taquería La Paloma en Usaquén..."></textarea>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Qué crees que hace bien esa competencia que tú también podrías mejorar?</label>
+          <textarea name="competencia_puntos_fuertes" placeholder="Ej: Tienen mejor decoración, están en zonas más visibles, hacen más publicidad en redes sociales..."></textarea>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Qué crees que hace Amor al Taco MEJOR que esa competencia?</label>
+          <textarea name="ventaja_propia" placeholder="Ej: Nuestra comida es más auténtica, el servicio es más personalizado, los precios son más accesibles..."></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 6: PRESENCIA EN INTERNET ── -->
+    <div class="seccion">
+      <div class="seccion-titulo">
+        <div class="num">6</div>
+        <div>
+          <h2>¿Cómo estás en internet hoy?</h2>
+          <p>Necesitamos saber qué ya existe para no empezar desde cero donde no hace falta</p>
+        </div>
+      </div>
+      <div class="seccion-cuerpo">
+
+        <div class="pregunta">
+          <label>¿Tienes página web actualmente?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="tiene_web" value="Sí, funciona bien"> Sí, y funciona bien</label>
+            <label class="opcion"><input type="radio" name="tiene_web" value="Sí, desactualizada"> Sí, pero está desactualizada o incompleta</label>
+            <label class="opcion"><input type="radio" name="tiene_web" value="No tengo"> No tengo</label>
+          </div>
+          <div class="ayuda" style="margin-top:10px">Si tienes web, ¿cuál es la dirección?</div>
+          <input type="url" name="url_web" placeholder="Ej: www.amoraltaco.com">
+        </div>
+
+        <div class="pregunta">
+          <label>¿Apareces en Google Maps cuando alguien busca "restaurante mexicano Bogotá"?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="google_maps" value="Sí, activo"> Sí, tengo perfil y está activo</label>
+            <label class="opcion"><input type="radio" name="google_maps" value="Sí, incompleto"> Sí, pero está incompleto o sin actualizar</label>
+            <label class="opcion"><input type="radio" name="google_maps" value="No lo sé"> No lo sé</label>
+            <label class="opcion"><input type="radio" name="google_maps" value="No tengo"> No, no tengo</label>
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <label>¿En qué redes sociales tiene presencia el restaurante?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="checkbox" name="redes" value="Instagram"> Instagram</label>
+            <label class="opcion"><input type="checkbox" name="redes" value="Facebook"> Facebook</label>
+            <label class="opcion"><input type="checkbox" name="redes" value="TikTok"> TikTok</label>
+            <label class="opcion"><input type="checkbox" name="redes" value="WhatsApp Business"> WhatsApp Business</label>
+            <label class="opcion"><input type="checkbox" name="redes" value="Ninguna"> Ninguna por ahora</label>
+          </div>
+          <div class="ayuda" style="margin-top:10px">Si tienes Instagram o Facebook, escribe el nombre de usuario aquí:</div>
+          <input type="text" name="usuario_redes" placeholder="Ej: @amoraltacobogota">
+        </div>
+
+        <div class="pregunta">
+          <label>¿Has hecho publicidad en internet antes?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="publicidad_previa" value="Sí, funcionó"> Sí, y funcionó bien</label>
+            <label class="opcion"><input type="radio" name="publicidad_previa" value="Sí, sin resultados"> Sí, pero no vi resultados</label>
+            <label class="opcion"><input type="radio" name="publicidad_previa" value="Nunca"> Nunca he hecho</label>
+          </div>
+          <div class="ayuda" style="margin-top:10px">Si ya hiciste publicidad, ¿dónde fue? ¿Qué pasó?</div>
+          <textarea name="detalle_publicidad" placeholder="Ej: Pagué publicidad en Instagram por $200.000 hace 6 meses pero no llegaron clientes nuevos..."></textarea>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Tienes reseñas de clientes en Google?</label>
+          <div class="ayuda">Las estrellas y comentarios que la gente deja cuando busca tu restaurante.</div>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="resenas" value="Varias y buenas"> Sí, tengo varias y son buenas</label>
+            <label class="opcion"><input type="radio" name="resenas" value="Pocas"> Sí, pero son pocas</label>
+            <label class="opcion"><input type="radio" name="resenas" value="Algunas negativas"> Tengo algunas negativas que me preocupan</label>
+            <label class="opcion"><input type="radio" name="resenas" value="No tengo o no sé"> No tengo o no lo sé</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 7: OBJETIVOS ── -->
+    <div class="seccion">
+      <div class="seccion-titulo">
+        <div class="num">7</div>
+        <div>
+          <h2>¿Qué quieres lograr?</h2>
+          <p>Esto define cómo vamos a medir el éxito del trabajo que hagamos juntos</p>
+        </div>
+      </div>
+      <div class="seccion-cuerpo">
+
+        <div class="pregunta">
+          <label>¿Cuál es tu meta principal con este servicio?</label>
+          <div class="ayuda">Marca todas las que apliquen.</div>
+          <div class="opciones">
+            <label class="opcion"><input type="checkbox" name="objetivos" value="Aparecer en Google"> Que más gente me encuentre cuando busca en Google</label>
+            <label class="opcion"><input type="checkbox" name="objetivos" value="Llenar semana"> Llenar más mesas entre semana</label>
+            <label class="opcion"><input type="checkbox" name="objetivos" value="Llenar finde"> Llenar más mesas los fines de semana</label>
+            <label class="opcion"><input type="checkbox" name="objetivos" value="Domicilios"> Conseguir más pedidos a domicilio</label>
+            <label class="opcion"><input type="checkbox" name="objetivos" value="Grupos grandes"> Que me llamen para reservas de grupos grandes</label>
+            <label class="opcion"><input type="checkbox" name="objetivos" value="Ser el mejor"> Ser reconocido como el mejor mexicano de Bogotá</label>
+            <label class="opcion"><input type="checkbox" name="objetivos" value="Expandirse"> Abrir otro local en el futuro</label>
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Cuántos clientes nuevos al mes te harían sentir que el servicio valió la pena?</label>
+          <input type="text" name="meta_clientes_nuevos" placeholder="Ej: Si logro 50 clientes nuevos al mes, estaría muy contento">
+        </div>
+
+        <div class="pregunta">
+          <label>¿Hay algún día o franja de horario donde el restaurante esté muy vacío?</label>
+          <textarea name="horario_vacio" placeholder="Ej: Los lunes y martes al mediodía el restaurante está casi vacío. También los domingos en la noche..."></textarea>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Hay alguna fecha especial o temporada del año importante para tu negocio?</label>
+          <div class="ayuda">Por ejemplo: fiestas patrias mexicanas, Día de Muertos, San Valentín, diciembre...</div>
+          <textarea name="fechas_especiales" placeholder="Ej: El 16 de septiembre (Independencia de México) hacemos una fiesta especial. También diciembre es bueno para grupos..."></textarea>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 8: FOTOS Y MATERIALES ── -->
+    <div class="seccion">
+      <div class="seccion-titulo">
+        <div class="num">8</div>
+        <div>
+          <h2>Fotos y materiales</h2>
+          <p>Las fotos son lo que más influye en que alguien decida ir o no a un restaurante</p>
+        </div>
+      </div>
+      <div class="seccion-cuerpo">
+
+        <div class="pregunta">
+          <label>¿Tienes fotos del restaurante o de los platos?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="tiene_fotos" value="Profesionales"> Sí, tengo fotos de buena calidad</label>
+            <label class="opcion"><input type="radio" name="tiene_fotos" value="Del celular"> Tengo algunas pero son del celular</label>
+            <label class="opcion"><input type="radio" name="tiene_fotos" value="No tengo"> No tengo fotos buenas</label>
+          </div>
+          <div class="nota-naranja" style="margin-top:12px">Si no tienes fotos buenas, no te preocupes. Lo podemos resolver al inicio del trabajo.</div>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Tienes un logo del restaurante?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="tiene_logo" value="Sí, digital"> Sí, tengo el archivo digital</label>
+            <label class="opcion"><input type="radio" name="tiene_logo" value="Tengo algo"> Tengo algo pero no estoy seguro del formato</label>
+            <label class="opcion"><input type="radio" name="tiene_logo" value="No tengo"> No tengo logo</label>
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Tienes el menú en formato digital (PDF, foto o documento)?</label>
+          <div class="opciones">
+            <label class="opcion"><input type="radio" name="tiene_menu_digital" value="Sí"> Sí, lo puedo compartir</label>
+            <label class="opcion"><input type="radio" name="tiene_menu_digital" value="Solo físico"> Lo tengo en físico pero no en digital</label>
+            <label class="opcion"><input type="radio" name="tiene_menu_digital" value="No tengo"> No tengo</label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECCIÓN 9: ÚLTIMAS PREGUNTAS ── -->
+    <div class="seccion">
+      <div class="seccion-titulo">
+        <div class="num">9</div>
+        <div>
+          <h2>Para cerrar</h2>
+          <p>Tres preguntas cortas que nos ayudan a entenderte mejor</p>
+        </div>
+      </div>
+      <div class="seccion-cuerpo">
+
+        <div class="pregunta">
+          <label>Si tuvieras que describir Amor al Taco en una sola frase, ¿cuál sería?</label>
+          <div class="ayuda">Como si se la dijeras a alguien que nunca ha ido.</div>
+          <input type="text" name="frase_descripcion" placeholder="Ej: El sabor más auténtico de México en el corazón de Bogotá">
+        </div>
+
+        <div class="pregunta">
+          <label>¿Qué tanto conoces de internet y tecnología? (siendo honesto)</label>
+          <div class="ayuda">1 = muy poco &nbsp;·&nbsp; 5 = me muevo bien. Esto nos ayuda a saber cómo comunicarnos contigo.</div>
+          <div class="escala-group">
+            <input type="radio" name="nivel_tecnologia" value="1" id="niv1">
+            <label for="niv1">1</label>
+            <input type="radio" name="nivel_tecnologia" value="2" id="niv2">
+            <label for="niv2">2</label>
+            <input type="radio" name="nivel_tecnologia" value="3" id="niv3">
+            <label for="niv3">3</label>
+            <input type="radio" name="nivel_tecnologia" value="4" id="niv4">
+            <label for="niv4">4</label>
+            <input type="radio" name="nivel_tecnologia" value="5" id="niv5">
+            <label for="niv5">5</label>
+          </div>
+        </div>
+
+        <div class="pregunta">
+          <label>¿Hay algo más que quieras que sepamos sobre tu restaurante antes de empezar?</label>
+          <textarea name="comentarios_adicionales" placeholder="Espacio libre para lo que quieras agregar..."></textarea>
+        </div>
+
+        <div class="nota">
+          <strong>Próximo paso</strong>
+          Una vez recibamos este cuestionario, te contactamos en menos de 24 horas para agendar una llamada corta donde resolvemos cualquier duda y arrancamos el trabajo.
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FIRMA Y ENVÍO -->
+    <div class="firma-section">
+      <h3>Para finalizar</h3>
+      <p>Confirma tus datos para que podamos identificar correctamente este cuestionario.</p>
+      <div class="firma-grid">
+        <div>
+          <label for="nombre_contacto">Tu nombre completo</label>
+          <input type="text" id="nombre_contacto" name="nombre_contacto" placeholder="Cristian ..." required>
+        </div>
+        <div>
+          <label for="celular_contacto">Tu celular (WhatsApp)</label>
+          <input type="tel" id="celular_contacto" name="celular_contacto" placeholder="300 000 0000" required>
+        </div>
+        <div>
+          <label for="nombre_negocio">Nombre del restaurante</label>
+          <input type="text" id="nombre_negocio" name="nombre_negocio" placeholder="Amor al Taco">
+        </div>
+        <div>
+          <label for="fecha_envio">Fecha de hoy</label>
+          <input type="text" id="fecha_envio" name="fecha_envio" placeholder="dd/mm/2026">
+        </div>
+      </div>
+      <button type="submit" class="btn-enviar">Enviar cuestionario</button>
+    </div>
+
+  </form>
+
+  <div class="footer">
+    RankNRoll — Agencia de marketing digital &nbsp;|&nbsp; Brief preparado para Cristian / Amor al Taco &nbsp;|&nbsp; Confidencial
+  </div>
+
+</div>
+</body>
+</html>
